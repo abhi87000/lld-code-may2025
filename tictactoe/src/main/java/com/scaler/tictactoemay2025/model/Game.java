@@ -7,7 +7,7 @@ import java.util.Set;
 
 import com.scaler.tictactoemay2025.exception.DuplicateSymbolException;
 import com.scaler.tictactoemay2025.exception.PlayerValidationException;
-import com.scaler.tictactoemay2025.services.WinningStrategy;
+import com.scaler.tictactoemay2025.strategies.WinningStrategy;
 
 public class Game {
     private List<Player> players; // Y
@@ -55,7 +55,7 @@ public class Game {
             return this;
         }
        
-        public Game build() throws DuplicateSymbolException{
+        public Game build() throws DuplicateSymbolException, PlayerValidationException{
             runValidations();
             // This above method will throw exception if any validation fails.
             return new Game(dimension,players,winningStrategies);
@@ -136,6 +136,47 @@ public class Game {
     }
     public void setWinningStrategies(List<WinningStrategy> winningStrategies) {
         this.winningStrategies = winningStrategies;
+    }
+
+
+
+    
+    // method which is responsible for UNDO.
+    public void undo() {
+        if (moves.size() == 0) {
+            System.out.println("No move to undo");
+            return;
+        }
+
+        // WE ARE GOING AHEAD WITH WAY-1 FOR UNDO. EASY FOR THIS PROBLEM.
+        /**
+         * S1. Remove the last element from the moves
+         * S2. Update the cell to empty state
+         * S3. Update the winning strategy. 
+         */
+        Move lastMove = moves.get(moves.size() - 1);
+
+        moves.remove(lastMove);
+
+        Cell cell = lastMove.getCell();
+        cell.setPlayer(null);
+        cell.setCellState(CellState.EMPTY);
+
+        for (WinningStrategy winningStrategy: winningStrategies) {
+            winningStrategy.handleUndo(board, lastMove);
+        }
+
+        nextMovePlayerIndex -= 1;
+        nextMovePlayerIndex = (nextMovePlayerIndex + players.size()) % players.size();
+    }
+
+    public void makeMove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    }
+
+    public void printBoard() {
+        board.printBoard();
     }
 
     

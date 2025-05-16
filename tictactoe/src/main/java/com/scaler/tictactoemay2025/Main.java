@@ -10,7 +10,7 @@ import com.scaler.tictactoemay2025.model.Game;
 import com.scaler.tictactoemay2025.model.GameState;
 import com.scaler.tictactoemay2025.model.Player;
 import com.scaler.tictactoemay2025.model.PlayerType;
-import com.scaler.tictactoemay2025.services.WinningStrategy;
+import com.scaler.tictactoemay2025.strategies.WinningStrategy;
 
 public class Main {
     public static void main(String[] args) throws DuplicateSymbolException {
@@ -19,6 +19,7 @@ public class Main {
         // S3. Add winningSt
         //S4. Create Game.
 
+        try{
         int dimention = 3;
         List<Player> players = new ArrayList<>();
         players.add(new Player(1L, "Abhishek", "X", PlayerType.HUMAN));
@@ -28,6 +29,8 @@ public class Main {
         GameController gameController = new GameController();
         // Now your game has been created.
         Game game = gameController.startGame(dimention, players, winningStrategies);
+        
+        System.out.println("Game is CREATED... " + game);
         
         Scanner scanner = new Scanner(System.in); // INPUT IN JAVA.
         
@@ -55,6 +58,8 @@ public class Main {
         }else{
             System.out.println("it is a draw...");
         }
-    
+    }catch(Exception e){
+        System.out.println("Exception : " + e);
+    }
     }
 }
