@@ -1,7 +1,60 @@
 package com.scaler.tictactoemay2025;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import com.scaler.tictactoemay2025.controller.GameController;
+import com.scaler.tictactoemay2025.exception.DuplicateSymbolException;
+import com.scaler.tictactoemay2025.model.Game;
+import com.scaler.tictactoemay2025.model.GameState;
+import com.scaler.tictactoemay2025.model.Player;
+import com.scaler.tictactoemay2025.model.PlayerType;
+import com.scaler.tictactoemay2025.services.WinningStrategy;
+
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
+    public static void main(String[] args) throws DuplicateSymbolException {
+        // S1. Set dimention
+        // S2. Create Players.
+        // S3. Add winningSt
+        //S4. Create Game.
+
+        int dimention = 3;
+        List<Player> players = new ArrayList<>();
+        players.add(new Player(1L, "Abhishek", "X", PlayerType.HUMAN));
+        players.add(new Player(1L, "Naveen", "O", PlayerType.HUMAN));
+        List<WinningStrategy> winningStrategies = new ArrayList<>();
+
+        GameController gameController = new GameController();
+        // Now your game has been created.
+        Game game = gameController.startGame(dimention, players, winningStrategies);
+        
+        Scanner scanner = new Scanner(System.in); // INPUT IN JAVA.
+        
+        while(gameController.getState(game).equals(GameState.IN_PROGRESS)){
+            // UNTILL MY GAME IS RUNNING, I WILL HAVE TO TAKE INPUT.
+            // S1. Print board and show to the user.
+            gameController.printBoard(game);
+            
+            System.out.println("Does anyone wants UNDO? (y/n) ");
+            String undoAns = scanner.next();
+            
+            if(undoAns.equals("y")){
+                gameController.undo(game);
+                continue;
+            }
+            // S2. 
+            gameController.makeMove(game);
+        }
+
+        System.out.println("Game is finished...");
+        GameState gameState = gameController.getState(game);
+
+        if(gameState.equals(GameState.WIN)){
+            System.out.println("Player : "+ game.getWinner() + " has won the game...");
+        }else{
+            System.out.println("it is a draw...");
+        }
+    
     }
 }

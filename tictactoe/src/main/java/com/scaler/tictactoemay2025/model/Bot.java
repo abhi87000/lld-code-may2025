@@ -1,13 +1,14 @@
 package com.scaler.tictactoemay2025.model;
 
 public class Bot extends Player {
-
-    public Bot(Long id, String name, String symbol, PlayerType type) {
+    private DifficultyLevel botDifficultyLevel;
+    
+    public Bot(Long id, String name, String symbol, PlayerType type, DifficultyLevel difficultyLevel) {
         super(id, name, symbol, type);
-        // THIS IS NEEDED, BECAUSE PARENT CLASS TAKES A CONSTRUCTOR.
+        this.botDifficultyLevel = difficultyLevel;
     }
 
-    private DifficultyLevel botDifficultyLevel;
+    
 
     public DifficultyLevel getBotDifficultyLevel() {
         return botDifficultyLevel;

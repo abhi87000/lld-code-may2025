@@ -16,6 +16,8 @@ public class Player {
         this.symbol = symbol;
         this.scanner = new Scanner(System.in);
     }
+
+    
     public String getSymbol() {
         return symbol;
     }
